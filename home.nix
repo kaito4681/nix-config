@@ -37,8 +37,8 @@
 
   ];
 
-  # This replaces the vim entry in environment.systemPackages.
   programs.vim.enable = true;
+  programs.neovim.enable = true;
 
   programs.home-manager.enable = true;
 }
