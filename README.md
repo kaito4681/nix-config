@@ -23,6 +23,11 @@ sudo systemctl restart tailscaled-set.service
 # https://console.tailscale.com/admin/machines
 ```
 
+```bash
+# Reload environment variables for Docker
+source /etc/set-environment
+```
+
 ## Update
 
 ```bash

@@ -34,6 +34,7 @@
   users.users.${username} = {
     isNormalUser = true;
     description = username;
+    linger = true;
 
     extraGroups = [
       "networkmanager"
@@ -51,6 +52,11 @@
   nixpkgs.config.allowUnfree = true;
 
   services.openssh.enable = true;
+
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
 
   services.tailscale = {
     enable = true;
