@@ -12,6 +12,7 @@
     curl
     wget
     codex
+    just
 
     # python
     python3
