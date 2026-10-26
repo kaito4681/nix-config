@@ -11,8 +11,11 @@
   home.packages = with pkgs; [
     curl
     wget
-    codex
     just
+
+    # ai-agents
+    codex
+    claude-code
 
     # python
     python3
