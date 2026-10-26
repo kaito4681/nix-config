@@ -1,7 +1,7 @@
-{ nixpkgs, home-manager, specialArgs, username }:
+{ nixpkgs, home-manager, specialArgs }:
 
 {
-  ${username} = home-manager.lib.homeManagerConfiguration {
+  linux = home-manager.lib.homeManagerConfiguration {
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     modules = [ ./base ];
     extraSpecialArgs = specialArgs;

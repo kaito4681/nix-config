@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, ... }:
 
 {
   imports = [
@@ -31,9 +31,9 @@
     variant = "";
   };
 
-  users.users.kaito = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "kaito";
+    description = username;
 
     extraGroups = [
       "networkmanager"

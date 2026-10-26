@@ -13,20 +13,16 @@
 
   outputs = { nixpkgs, home-manager, ... }:
     let
-      username = "kaito";
-      githubName = "kaito4681";
-      githubEmail = "133554451+kaito4681@users.noreply.github.com";
-
-      specialArgs = {
-        inherit username githubName githubEmail;
-      };
+      settings = import ./settings.nix;
+      specialArgs = settings;
     in {
       nixosConfigurations = import ./hosts/nixos {
-        inherit nixpkgs home-manager specialArgs username;
+        inherit nixpkgs home-manager specialArgs;
+        inherit (settings) username;
       };
 
       homeConfigurations = import ./home {
-        inherit nixpkgs home-manager specialArgs username;
+        inherit nixpkgs home-manager specialArgs;
       };
     };
 }
