@@ -1,7 +1,7 @@
-{ pkgs, username, githubName, githubEmail, ... }:
+{ pkgs, username, ... }:
 
 {
-  imports = [ ./nix/git.nix ];
+  imports = [ ./git.nix ];
 
   home.username = username;
   home.homeDirectory = "/home/${username}";
@@ -34,7 +34,6 @@
     unzip
     zip
     fastfetch
-
   ];
 
   programs.vim.enable = true;
