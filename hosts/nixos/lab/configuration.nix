@@ -52,6 +52,19 @@
 
   services.openssh.enable = true;
 
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+    useRoutingFeatures = "server";
+
+    extraSetFlags = [
+      "--advertise-exit-node"
+      "--advertise-routes=10.0.87.0/24,133.7.6.100/32,133.7.6.101/32,202.19.138.120/32"
+      "--stateful-filtering=true"
+      "--hostname=lab"
+    ];
+  };
+
   programs.nix-ld.enable = true;
 
   hardware.graphics.enable = true;
