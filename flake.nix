@@ -21,6 +21,10 @@
         inherit username githubName githubEmail;
       };
     in {
+      nixosConfigurations = import ./hosts/nixos {
+        inherit nixpkgs home-manager specialArgs username;
+      };
+
       homeConfigurations = import ./home {
         inherit nixpkgs home-manager specialArgs username;
       };
