@@ -1,8 +1,5 @@
-{ lib, pkgs, ... }:
+{ ... }:
 
-let
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
-in
 {
   xdg.enable = true;
 
@@ -21,7 +18,5 @@ in
     MYSQL_EDITOR = "nvim";
     SQLITE_EDITOR = "nvim";
     VISUAL = "nvim";
-  } // lib.optionalAttrs isDarwin {
-    BASH_SILENCE_DEPRECATION_WARNING = "1";
   };
 }

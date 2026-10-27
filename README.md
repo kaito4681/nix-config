@@ -59,6 +59,7 @@ Home Manager configurations are `lab`, `linux` (generic x86_64 Linux), and
 
 Host-specific user settings belong in `home/hosts/lab/default.nix`.
 Shared user settings remain in `home/base/`.
+macOS-specific settings and Ghostty integration are in `home/darwin/`.
 
 ## Migration from integrated Home Manager
 

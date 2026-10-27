@@ -1,7 +1,6 @@
 { lib, pkgs, ... }:
 
 let
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   nvidiaAlias = ''
     if command -v nvidia-smi >/dev/null 2>&1; then
       alias ns='nvidia-smi'
@@ -38,9 +37,6 @@ in
     # VS Code で管理者権限のファイルを編集
     sudocode = ''SUDO_EDITOR="$(which code) --wait" sudoedit'';
     scode = ''SUDO_EDITOR="$(which code) --wait" sudoedit'';
-  } // lib.optionalAttrs isDarwin {
-    tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
-    "draw.io" = "/Applications/draw.io.app/Contents/MacOS/draw.io";
   };
 
   # NVIDIA GPU の状態表示

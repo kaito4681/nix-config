@@ -6,8 +6,6 @@
 }:
 
 let
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
-
   # 遅延読み込み用の関数
   defer = command: "zsh-defer -m -p -r ${command}";
   deferSource = file: defer "source ${lib.escapeShellArg (toString file)}";
@@ -57,8 +55,8 @@ in
         # SSH・リポジトリ検索・ターミナル連携
         ${deferSource ./integrations/ssh-host-completion.zsh}
         ${deferSource ./integrations/ghq-ssh.zsh}
-        ${lib.optionalString isDarwin (deferSource ./integrations/ghostty.zsh)}
-
+      '')
+      (lib.mkOrder 1030 ''
         # シンタックスハイライト
         ${deferSource "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"}
         ${deferSource ./highlighting.zsh}

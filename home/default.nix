@@ -42,5 +42,6 @@ in
     source = nixpkgsDarwin;
     system = "aarch64-darwin";
     hostName = "darwin";
+    modules = [ ./darwin ];
   };
 }

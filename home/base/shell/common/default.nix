@@ -13,7 +13,7 @@ let
     fi
 
     # Linux 用のクリップボード・URL 操作
-    ${lib.optionalString (!pkgs.stdenv.hostPlatform.isDarwin) ''
+    ${lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
       ${builtins.readFile ./clipboard.sh}
       ${builtins.readFile ./open.sh}
     ''}
