@@ -1,25 +1,28 @@
 { ... }:
 
 {
-  imports = [ ./starship.nix ];
+  imports = [
+    ./starship.nix
+    ./eza.nix
+  ];
 
   programs.fzf = {
     enable = true;
     enableBashIntegration = true;
-    enableZshIntegration = false;
+    enableZshIntegration = true;
   };
   programs.zoxide = {
     enable = true;
     enableBashIntegration = true;
-    enableZshIntegration = false;
+    enableZshIntegration = true;
   };
   programs.direnv = {
     enable = true;
-    enableZshIntegration = false;
+    enableZshIntegration = true;
     nix-direnv.enable = true;
   };
   programs.mise = {
     enable = true;
-    enableZshIntegration = false;
+    enableZshIntegration = true;
   };
 }

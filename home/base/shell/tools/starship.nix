@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 {
-  programs.starship = {
+  config.programs.starship = {
     enable = true;
-    enableBashIntegration = false;
-    enableZshIntegration = false;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
     settings = {
       format = "$shell\${custom.hostname_ssh_agent}\${custom.hostname_no_ssh_agent}$directory$character";
       add_newline = false;
@@ -32,13 +32,16 @@
   };
 
   # プロファイルの切り替え後も使えるパスで Starship を初期化
-  programs.bash.initExtra = lib.mkIf config.programs.bash.enable (
-    lib.mkOrder 1900 ''
-      if [[ $TERM != "dumb" ]]; then
-        eval "$(PATH=${
-          lib.makeBinPath [ config.programs.starship.package ]
-        }:$PATH ${lib.getExe config.programs.starship.package} init bash --print-full-init)"
-      fi
-    ''
-  );
+  options.programs.bash.initExtra = lib.mkOption {
+    apply =
+      text:
+      lib.replaceStrings
+        [ "${lib.getExe config.programs.starship.package} init bash" ]
+        [
+          "PATH=${
+            lib.makeBinPath [ config.programs.starship.package ]
+          }:$PATH ${lib.getExe config.programs.starship.package} init bash"
+        ]
+        text;
+  };
 }

@@ -41,7 +41,6 @@
       # ファイル・テキスト検索
       ripgrep
       fd
-      fzf
 
       # ユーティリティ
       tree
@@ -50,8 +49,6 @@
       fastfetch
 
       # シェル関連ツール
-      direnv
-      starship
       sheldon
 
       lefthook
@@ -59,9 +56,7 @@
 
       hyperfine
       bat
-      eza
       tmux
-      zoxide
       perl
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux (

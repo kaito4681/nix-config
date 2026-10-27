@@ -9,12 +9,9 @@
     "....." = "cd ../../../..";
 
     # ファイル一覧
-    ls = "eza --icons=auto --group-directories-first";
-    l = "eza -l --header --icons=auto --time-style=relative --group-directories-first";
-    ll = "eza -l --header --icons=auto --time-style=relative --group-directories-first";
-    la = "eza -a --icons=auto --group-directories-first";
-    lla = "eza -la --header --icons=auto --time-style=relative --group-directories-first";
-    lt = "eza --tree --icons=auto --group-directories-first";
+    l = "eza -l --header --time-style=relative";
+    ll = "eza -l --header --time-style=relative";
+    lla = "eza -la --header --time-style=relative";
 
     # Git 操作
     g = "git";
