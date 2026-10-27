@@ -1,0 +1,31 @@
+name: Other checks
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  format-and-lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
+        with:
+          github_access_token: ${{ github.token }}
+      - name: Check Nix formatting
+        run: |
+          mapfile -d '' files < <(git ls-files -z '*.nix')
+          nix run --inputs-from . nixpkgs#nixfmt -- --check "${files[@]}"
+      - name: Check workflows
+        run: nix run --inputs-from . nixpkgs#actionlint
