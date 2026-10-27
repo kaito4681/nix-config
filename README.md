@@ -87,6 +87,29 @@ This renames conflicting files with the `.backup` suffix. If that backup
 already exists, activation stops instead of overwriting it. Subsequent
 switches can use `just home apply lab` or `just apply lab` as usual.
 
+## CI and SSH public keys
+
+GitHub Actions checks Nix formatting and flake evaluation on pushes to `main`,
+pull requests, and manual runs. It discovers every Home Manager and NixOS
+configuration and builds each on a matching Linux or macOS runner.
+It does not activate configurations: existing-file conflicts, hardware behavior,
+and SSH connectivity still need to be checked on the actual machine.
+
+SSH login keys are fetched from the account in `settings.nix` (`githubName`).
+`home/base/ssh-keys.json` pins their hash and records fingerprints for review.
+Every day at 06:17 JST (best-effort schedule), or on a manual workflow run,
+Actions checks the keys and creates or updates a PR when they change.
+The PR lists added and removed fingerprints and runs the configuration checks.
+Failed downloads, invalid keys, and empty key lists stop the update.
+
+Enable **Settings → Actions → General → Workflow permissions → Allow GitHub
+Actions to create and approve pull requests**. Automatic merging is not enabled.
+The scheduled workflow starts after these files reach the default branch.
+After reviewing and merging a key update, pull the changes on each machine and
+run `just home apply <host>`; merging alone does not update installed login keys.
+For emergency key revocation, update the actual machines immediately instead of
+waiting for the daily workflow.
+
 ## Migration from integrated Home Manager
 
 The NixOS configuration no longer includes the Home Manager module.
