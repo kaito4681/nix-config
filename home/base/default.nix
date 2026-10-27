@@ -1,7 +1,7 @@
-{ pkgs, username, ... }:
+{ lib, pkgs, username, ... }:
 
 {
-  imports = [ ./git.nix ];
+  imports = [ ./git.nix ./shell ];
 
   home.username = username;
   home.homeDirectory =
@@ -11,38 +11,58 @@
   home.packages = with pkgs; [
     curl
     wget
-    just
 
-    # ai-agents
+    # Nix
+    nixfmt
+
+    # AI エージェント
     codex
     claude-code
 
-    # python
+    # Python 開発
     python3
     uv
     ruff
     ty
 
-    # System monitoring
+    # システム監視・ネットワーク調査
     htop
+    nmap
 
-    # Search
+    # ファイル・テキスト検索
     ripgrep
     fd
     fzf
 
-    # File viewing
-    bat
-
-    # Utilities
+    # ユーティリティ
     tree
     unzip
     zip
     fastfetch
-  ];
+
+    # シェル関連ツール
+    direnv
+    starship
+    sheldon
+
+    lefthook
+    just
+
+    hyperfine
+    bat
+    eza
+    tmux
+    zoxide
+    perl
+  ] ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) (with pkgs; [
+    xdg-utils
+    wl-clipboard
+    xclip
+  ]);
 
   programs.vim.enable = true;
   programs.neovim.enable = true;
+  programs.neovim.defaultEditor = true;
 
   programs.home-manager.enable = true;
 }

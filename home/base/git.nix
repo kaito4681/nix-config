@@ -13,6 +13,8 @@
       };
 
       init.defaultBranch = "main";
+      core.editor = "nvim";
+      sequence.editor = "nvim";
 
       alias = {
         s = "status";
