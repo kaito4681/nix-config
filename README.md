@@ -11,9 +11,9 @@ curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable
 
 Open a new terminal after installation.
 
-Before applying, customize `settings.nix` (username, GitHub account, and email)
-and `home/base/ssh-keys.json` (SSH public key hash and fingerprints) for your own
-account. After editing `githubName`, update the key information with:
+Before applying, customize `settings.nix` (username, GitHub account, email, and
+SSH public key information) for your own account. After editing `githubName`,
+update `sshKeys` with:
 
 ```bash
 nix shell --inputs-from . nixpkgs#python3 nixpkgs#openssh --command python3 ci/ssh-keys/update.py

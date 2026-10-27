@@ -43,7 +43,7 @@ jobs:
           commit-message: 'chore(ssh): update GitHub public keys'
           title: 'chore(ssh): update GitHub public keys'
           body-path: ${{ steps.keys.outputs.body-path }}
-          add-paths: home/base/ssh-keys.json
+          add-paths: settings.nix
 
   # GITHUB_TOKEN で作成した PR のイベント発火に依存せず、更新内容を検証する。
   check-updated-keys:

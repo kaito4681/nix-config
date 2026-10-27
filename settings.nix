@@ -2,4 +2,12 @@
   username = "kaito";
   githubName = "kaito4681";
   githubEmail = "133554451+kaito4681@users.noreply.github.com";
+
+  sshKeys = {
+    hash = "sha256-EPjvAS6fdc6/j8OaFeKCBHkCVM3KRL70yGM+fwudhxg=";
+    fingerprints = [
+      "SHA256:F8yOcanIH0/QI0RULmpdhZOAlgmWrtWgmql5VpJ7E+M"
+      "SHA256:QR9oA7GmGU959L/lIft+a34hqkWcFleiyHhyi6iL29M"
+    ];
+  };
 }

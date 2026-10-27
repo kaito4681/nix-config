@@ -32,10 +32,36 @@ def fingerprints(content):
     return sorted(result)
 
 
+def update_settings(text, keys):
+    # 他の設定やコメントを残し、sshKeys の値だけを置き換える。
+    pattern = r"(?ms)^  sshKeys = \{\n.*?^  \};"
+    matches = list(re.finditer(pattern, text))
+    if len(matches) != 1:
+        raise ValueError("Expected one sshKeys block in settings.nix")
+    block = matches[0].group()
+    for pattern, replacement in [
+        (r'(?m)^    hash = "[^"\n]*";', f'    hash = "{keys["hash"]}";'),
+        (
+            r"(?ms)^    fingerprints = \[\n.*?^    \];",
+            "    fingerprints = [\n"
+            + "".join(f'      "{value}"\n' for value in keys["fingerprints"])
+            + "    ];",
+        ),
+    ]:
+        block, count = re.subn(pattern, lambda _, value=replacement: value, block)
+        if count != 1:
+            raise ValueError("Unexpected sshKeys format in settings.nix")
+    match = matches[0]
+    return text[: match.start()] + block + text[match.end() :]
+
+
 def main():
     root = Path(__file__).resolve().parents[2]
     os.chdir(root)
-    username = run("nix", "eval", "--raw", "--file", "settings.nix", "githubName")
+    target = root / "settings.nix"
+    original = target.read_text()
+    settings = json.loads(run("nix", "eval", "--json", "--file", "settings.nix"))
+    username = settings["githubName"]
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}", username):
         raise ValueError("Invalid githubName")
 
@@ -55,8 +81,7 @@ def main():
             Path(fetched["storePath"]).read_text(encoding="ascii")
         ),
     }
-    target = root / "home/base/ssh-keys.json"
-    previous = json.loads(target.read_text())
+    previous = settings["sshKeys"]
     changed = current != previous
     if output := os.environ.get("GITHUB_OUTPUT"):
         with open(output, "a") as stream:
@@ -64,6 +89,12 @@ def main():
     if not changed:
         print("SSH public keys are unchanged")
         return
+
+    updated = update_settings(original, current)
+    # 書き込む前に Nix として評価し、他の設定が変わっていないことを確認する。
+    evaluated = json.loads(run("nix", "eval", "--json", "--expr", updated))
+    if evaluated != settings | {"sshKeys": current}:
+        raise ValueError("Unexpected changes outside sshKeys")
 
     added = sorted(set(current["fingerprints"]) - set(previous["fingerprints"]))
     removed = sorted(set(previous["fingerprints"]) - set(current["fingerprints"]))
@@ -82,7 +113,11 @@ def main():
     if output := os.environ.get("GITHUB_OUTPUT"):
         with open(output, "a") as stream:
             stream.write(f"body-path={body_path}\n")
-    target.write_text(json.dumps(current, indent=2) + "\n")
+    if target.read_text() != original:
+        raise ValueError(
+            "settings.nix changed during the update; refusing to overwrite"
+        )
+    target.write_text(updated)
     print(f"Updated SSH public keys; PR body: {body_path}")
 
 
