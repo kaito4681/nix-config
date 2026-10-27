@@ -36,6 +36,7 @@ in
     source = nixpkgs;
     system = "x86_64-linux";
     hostName = "linux";
+    modules = [ ./linux ];
   };
 
   darwin = mkHome {

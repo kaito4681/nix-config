@@ -1,12 +1,5 @@
-{ lib, pkgs, ... }:
+{ ... }:
 
-let
-  nvidiaAlias = ''
-    if command -v nvidia-smi >/dev/null 2>&1; then
-      alias ns='nvidia-smi'
-    fi
-  '';
-in
 {
   home.shellAliases = {
     # ディレクトリ移動
@@ -38,8 +31,4 @@ in
     sudocode = ''SUDO_EDITOR="$(which code) --wait" sudoedit'';
     scode = ''SUDO_EDITOR="$(which code) --wait" sudoedit'';
   };
-
-  # NVIDIA GPU の状態表示
-  programs.bash.initExtra = lib.mkIf pkgs.stdenv.hostPlatform.isLinux nvidiaAlias;
-  programs.zsh.initContent = lib.mkIf pkgs.stdenv.hostPlatform.isLinux nvidiaAlias;
 }
