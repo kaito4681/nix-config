@@ -1,4 +1,9 @@
-{ pkgs, githubName, githubEmail, ... }:
+{
+  pkgs,
+  githubName,
+  githubEmail,
+  ...
+}:
 
 {
   home.packages = [ pkgs.ghq ];
@@ -77,7 +82,6 @@
         user = githubName;
       };
 
-      core.pager = "delta";
     };
 
     ignores = [
