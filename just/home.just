@@ -8,8 +8,8 @@ default:
   @just --list home
 
 # ユーザー設定の適用
-apply host=default_host:
-  nix run path:.#home-manager -- switch --flake {{quote("path:.#" + host)}}
+apply host=default_host backup="":
+  nix run path:.#home-manager -- switch --flake {{quote("path:.#" + host)}} {{if backup == "" { "" } else { "-b " + quote(backup) }}}
 
 # ユーザー設定のビルド
 build host=default_host:
