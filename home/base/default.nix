@@ -7,7 +7,6 @@
 
 {
   imports = [
-    ./git.nix
     ./shell
   ];
 
