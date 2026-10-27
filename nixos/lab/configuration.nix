@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   username,
   ...
@@ -60,7 +61,22 @@
   # Home Manager の適用前でも管理コマンドを使えるようにする。
   environment.systemPackages = [ pkgs.just ];
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    # 公開鍵は各ユーザーの Home Manager が ~/.ssh/authorized_keys に置く．
+    authorizedKeysInHomedir = true;
+    # Tailscale 経由でのみ受け付ける．
+    openFirewall = false;
+    settings = {
+      PubkeyAuthentication = true;
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+    };
+  };
+
+  networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts =
+    config.services.openssh.ports;
 
   virtualisation.docker.rootless = {
     enable = true;
