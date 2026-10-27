@@ -1,4 +1,9 @@
-{ config, pkgs, username, ... }:
+{
+  config,
+  pkgs,
+  username,
+  ...
+}:
 
 {
   imports = [
@@ -35,6 +40,7 @@
     isNormalUser = true;
     description = username;
     linger = true;
+    shell = pkgs.zsh;
 
     extraGroups = [
       "networkmanager"
@@ -50,6 +56,9 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+
+  # Home Manager の適用前でも管理コマンドを使えるようにする。
+  environment.systemPackages = [ pkgs.just ];
 
   services.openssh.enable = true;
 
@@ -72,6 +81,12 @@
   };
 
   programs.nix-ld.enable = true;
+  programs.zsh = {
+    enable = true;
+    # Home Manager queues completion and prompt initialization with zsh-defer.
+    enableGlobalCompInit = false;
+    promptInit = "";
+  };
 
   hardware.graphics.enable = true;
 

@@ -1,26 +1,22 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
-# List available recipes
+mod home 'just/home.just'
+mod nixos 'just/nixos.just'
+
+# コマンド一覧
 default:
   @just --list
 
-# Check all flake outputs
+# 構成の検証
 check:
-  nix flake check
+  nix flake check path:.
 
-# Build the NixOS configuration without activating it
-build host="lab":
-  sudo nixos-rebuild build --flake ".#{{ host }}"
+# システム設定とユーザー設定を順に適用
+apply host="lab":
+  just nixos apply {{quote(host)}}
+  just home apply {{quote(host)}}
 
-# Activate the NixOS and Home Manager configurations
-switch host="lab":
-  sudo nixos-rebuild switch --flake ".#{{ host }}"
-
-# Activate a standalone Home Manager configuration
-home configuration="linux":
-  home-manager switch --flake ".#{{ configuration }}"
-
-# Update flake inputs
+# 依存パッケージの更新
 update:
   #!/usr/bin/env bash
   set -euo pipefail
@@ -38,6 +34,6 @@ update:
 
   nix flake update
 
-# Show flake outputs
+# 構成一覧
 show:
-  nix flake show
+  nix flake show path:.

@@ -12,19 +12,30 @@
 
   };
 
-  outputs = { nixpkgs, nixpkgs-darwin, home-manager, ... }:
+  outputs =
+    {
+      nixpkgs,
+      nixpkgs-darwin,
+      home-manager,
+      ...
+    }:
     let
       settings = import ./settings.nix;
       specialArgs = settings;
-    in {
+    in
+    {
       nixosConfigurations = import ./hosts/nixos {
-        inherit nixpkgs home-manager specialArgs;
-        inherit (settings) username;
+        inherit nixpkgs specialArgs;
       };
 
       homeConfigurations = import ./home {
         inherit nixpkgs home-manager specialArgs;
         nixpkgsDarwin = nixpkgs-darwin;
       };
+
+      # 初回適用に使う Home Manager コマンド
+      packages = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
+        home-manager = home-manager.packages.${system}.home-manager;
+      });
     };
 }
