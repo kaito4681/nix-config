@@ -24,7 +24,7 @@
       specialArgs = settings;
     in
     {
-      nixosConfigurations = import ./hosts/nixos {
+      nixosConfigurations = import ./nixos {
         inherit nixpkgs specialArgs;
       };
 
