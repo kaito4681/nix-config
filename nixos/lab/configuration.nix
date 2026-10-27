@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   username,
   ...
@@ -8,6 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./nvidia.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -86,19 +86,6 @@
     # Home Manager queues completion and prompt initialization with zsh-defer.
     enableGlobalCompInit = false;
     promptInit = "";
-  };
-
-  hardware.graphics.enable = true;
-
-  services.xserver.videoDrivers = [
-    "nvidia"
-  ];
-
-  hardware.nvidia = {
-    open = true;
-    modesetting.enable = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
 
   system.stateVersion = "26.05";
