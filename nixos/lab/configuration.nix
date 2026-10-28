@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     ./nvidia.nix
     ./gpueue.nix
+    ./hdd.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
