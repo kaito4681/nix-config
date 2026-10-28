@@ -76,8 +76,16 @@
     };
   };
 
-  networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts =
-    config.services.openssh.ports;
+  networking.firewall = {
+    enable = true;
+    # Tailscale 経由の受信は全ポート許可する．
+    trustedInterfaces = [ config.services.tailscale.interfaceName ];
+    # その他のインターフェースでは，サービスが明示的に開けるポートのみ許可する．
+    # Tailscale 接続用の UDP ポートは services.tailscale.openFirewall で許可する．
+    allowedTCPPorts = [ ];
+    allowedUDPPorts = [ ];
+    # NixOS の標準ファイアウォールは送信を制限せず，その応答も許可する．
+  };
 
   virtualisation.docker.rootless = {
     enable = true;
