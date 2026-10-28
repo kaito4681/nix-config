@@ -108,4 +108,13 @@ in
   # nvidia_x11.bin がそのまま提供する nvidia-smi 等より優先させ、起動中のカーネルモジュールに
   # 対応するバイナリを使わせる。
   environment.systemPackages = [ (lib.hiPrio bootedTools) ];
+
+  # uv の Python や pip の wheel など nix-ld 経由で動くバイナリは libcuda.so.1 や
+  # libnvidia-ml.so.1 を名前だけで読むので、起動中の世代のドライバを検索パスに加える。
+  environment.sessionVariables.NIX_LD_LIBRARY_PATH = lib.mkIf config.programs.nix-ld.enable (
+    lib.mkForce [
+      "/run/current-system/sw/share/nix-ld/lib"
+      "/run/opengl-driver/lib"
+    ]
+  );
 }
