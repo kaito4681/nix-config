@@ -10,6 +10,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # gpueue の CRIU 4.2 パッケージは nixos-unstable の criu を上書きできないため，
+    # nixpkgs は gpueue 側で固定されたもの (安定版) を使う．
+    gpueue.url = "github:kaito4681/gpueue/stable";
   };
 
   outputs =
@@ -17,6 +20,7 @@
       nixpkgs,
       nixpkgs-darwin,
       home-manager,
+      gpueue,
       ...
     }:
     let
@@ -25,7 +29,7 @@
     in
     {
       nixosConfigurations = import ./nixos {
-        inherit nixpkgs specialArgs;
+        inherit nixpkgs gpueue specialArgs;
       };
 
       homeConfigurations = import ./home {

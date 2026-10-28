@@ -1,4 +1,8 @@
-{ nixpkgs, specialArgs }:
+{
+  nixpkgs,
+  gpueue,
+  specialArgs,
+}:
 
 let
   hostNames = [ "lab" ];
@@ -11,6 +15,7 @@ let
       };
 
       modules = [
+        gpueue.nixosModules.default
         ./${hostName}/configuration.nix
         { networking.hostName = hostName; }
       ];
