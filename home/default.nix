@@ -13,12 +13,15 @@ let
       hostName,
       modules ? [ ./base ],
     }:
+    let
+      privateModule = ../private/home/${hostName}.nix;
+    in
     home-manager.lib.homeManagerConfiguration {
       pkgs = import source {
         inherit system;
         config.allowUnfree = true;
       };
-      inherit modules;
+      modules = modules ++ nixpkgs.lib.optional (builtins.pathExists privateModule) privateModule;
       extraSpecialArgs = specialArgs // {
         inherit hostName;
       };

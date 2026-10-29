@@ -18,3 +18,6 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 .venv/
+
+# Local checkout of nix-config-private
+/private/
