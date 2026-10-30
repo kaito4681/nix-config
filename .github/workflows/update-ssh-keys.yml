@@ -50,5 +50,6 @@ jobs:
     needs: update
     if: needs.update.outputs.changed == 'true' && needs.update.outputs.sha != ''
     uses: ./.github/workflows/check.yml
+    secrets: inherit
     with:
       ref: ${{ needs.update.outputs.sha }}

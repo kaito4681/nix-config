@@ -59,6 +59,16 @@ NixOS では、Docker 用の環境変数を読み直します。
 source /etc/set-environment
 ```
 
+## CI のキャッシュ
+
+GitHub Actions は Cachix を利用します。Cachix で公開キャッシュを作成し、
+Repository variable `CACHIX_CACHE` にキャッシュ名、Repository secret
+`CACHIX_AUTH_TOKEN` にそのキャッシュへの書き込みトークンを設定してください。
+キャッシュ名が未設定の場合はキャッシュ処理をスキップします。
+Pull request ではキャッシュの読み取りのみ行います。
+
+手元でも利用する場合は `nix run nixpkgs#cachix -- use kaito4681-nix-config` を実行してください。
+
 ## コマンド
 
 `nix develop` を実行すると、コミット時に nixfmt を実行する Git hook が登録されます。

@@ -61,6 +61,15 @@ On NixOS, reload environment variables for Docker:
 source /etc/set-environment
 ```
 
+## CI cache
+
+GitHub Actions uses Cachix. Create a public cache in Cachix, set the repository
+variable `CACHIX_CACHE` to its name, and set the repository secret
+`CACHIX_AUTH_TOKEN` to a write token for that cache. Caching is skipped when the
+cache name is unset. Pull requests only read from the cache.
+
+To use the cache locally, run `nix run nixpkgs#cachix -- use kaito4681-nix-config`.
+
 ## Commands
 
 Run `nix develop` to install the Git hook that runs nixfmt on commit.

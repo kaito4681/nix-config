@@ -17,6 +17,7 @@ permissions:
 jobs:
   other:
     uses: ./.github/workflows/other.yml
+    secrets: inherit
     with:
       ref: ${{ inputs.ref || github.sha }}
 
@@ -33,6 +34,13 @@ jobs:
       - uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
         with:
           github_access_token: ${{ github.token }}
+      - name: Use Cachix
+        if: vars.CACHIX_CACHE != ''
+        uses: cachix/cachix-action@38b082610b782e7e93e209c35fd730d399dee866 # v17
+        with:
+          name: ${{ vars.CACHIX_CACHE }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: ${{ github.event_name == 'pull_request' }}
       - name: Check flake
         run: nix flake check --all-systems --no-build --no-update-lock-file path:.
       - name: Discover all configurations
@@ -56,6 +64,13 @@ jobs:
       - uses: cachix/install-nix-action@d9186cbdca7adedf113a159fa91f725a27866771 # v31
         with:
           github_access_token: ${{ github.token }}
+      - name: Use Cachix
+        if: vars.CACHIX_CACHE != ''
+        uses: cachix/cachix-action@38b082610b782e7e93e209c35fd730d399dee866 # v17
+        with:
+          name: ${{ vars.CACHIX_CACHE }}
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          skipPush: ${{ github.event_name == 'pull_request' }}
       - name: Build configuration without activating
         env:
           TARGET: ${{ matrix.target }}
