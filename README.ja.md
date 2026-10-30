@@ -59,19 +59,6 @@ NixOS では、Docker 用の環境変数を読み直します。
 source /etc/set-environment
 ```
 
-## CI のキャッシュ
-
-GitHub Actions は Cachix を利用します。Cachix で公開キャッシュを作成し、
-Repository variable `CACHIX_CACHE` にキャッシュ名、Repository secret
-`CACHIX_AUTH_TOKEN` にそのキャッシュへの書き込みトークンを設定してください。
-キャッシュ名が未設定の場合はキャッシュ処理をスキップします。
-Pull request ではキャッシュの読み取りのみ行います。
-
-`lab` は NixOS 設定の適用後にキャッシュを自動利用します。
-flake にもキャッシュ設定があり、`nix build --accept-flake-config` などで利用できます。
-ただし Nix daemon が設定の追加を許可しない環境では、管理者による設定が必要です。
-NixOS 以外では `nix run nixpkgs#cachix -- use kaito4681-nix-config` で設定できます。
-
 ## コマンド
 
 `nix develop` を実行すると、コミット時に nixfmt を実行する Git hook が登録されます。
@@ -92,3 +79,4 @@ just show                  # 設定一覧を表示
 ```
 
 Home Manager のホスト: `lab`、`linux`、`darwin`(Apple Silicon)。
+
