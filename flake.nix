@@ -53,7 +53,16 @@
         home-manager = home-manager.packages.${system}.home-manager;
       });
 
-      formatter = forEachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt);
+      formatter = forEachSystem (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          inherit (self.checks.${system}.pre-commit-check.config) package configFile;
+        in
+        pkgs.writeShellScriptBin "format" ''
+          exec ${pkgs.lib.getExe package} run --all-files --config ${configFile} "$@"
+        ''
+      );
 
       checks = forEachSystem (system: {
         pre-commit-check = git-hooks.lib.${system}.run {

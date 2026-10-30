@@ -12,6 +12,10 @@ default:
 check:
   nix flake check path:.
 
+# Nix ファイルの整形
+fmt:
+  nix fmt
+
 # システム設定とユーザー設定を順に適用
 apply host="lab":
   just nixos apply {{quote(host)}}

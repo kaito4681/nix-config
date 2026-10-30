@@ -73,6 +73,7 @@ just home build <host>     # 適用せずに Home Manager をビルド
 just nixos apply lab       # NixOS を適用
 just nixos build lab       # 適用せずに NixOS をビルド
 just check                 # flake をチェック
+just fmt                   # Nix ファイルを整形
 just show                  # 設定一覧を表示
 ```
 

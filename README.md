@@ -75,6 +75,7 @@ just home build <host>     # Build Home Manager without applying
 just nixos apply <host>    # Apply NixOS
 just nixos build <host>    # Build NixOS without applying
 just check                 # Check the flake
+just fmt                   # Format Nix files
 just show                  # Show configurations
 ```
 
