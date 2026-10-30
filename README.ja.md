@@ -62,6 +62,7 @@ source /etc/set-environment
 ## コマンド
 
 `nix develop` を実行すると、コミット時に nixfmt を実行する Git hook が登録されます。
+direnv を使う場合は、初回に `direnv allow` を実行すると、ディレクトリに入るたびに同じ開発環境が自動で読み込まれます。
 全 Nix ファイルの整形は `nix fmt`、整形チェックは `nix flake check` で実行できます。
 
 ```bash

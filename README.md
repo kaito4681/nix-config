@@ -64,6 +64,7 @@ source /etc/set-environment
 ## Commands
 
 Run `nix develop` to install the Git hook that runs nixfmt on commit.
+With direnv, run `direnv allow` once to load the same development environment automatically whenever you enter the directory.
 Use `nix fmt` to format all Nix files and `nix flake check` to check formatting.
 
 ```bash
