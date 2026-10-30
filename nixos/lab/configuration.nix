@@ -11,6 +11,7 @@
     ./nvidia.nix
     ./gpueue.nix
     ./hdd.nix
+    ./printing.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
