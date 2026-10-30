@@ -111,7 +111,7 @@
   # /bin/bash などを決め打ちする外部スクリプト向けに，
   # /bin・/usr/bin の実行ファイルを呼び出し元の PATH から解決する．
   services.envfs.enable = true;
-  
+
   programs.zsh = {
     enable = true;
     # Home Manager queues completion and prompt initialization with zsh-defer.
