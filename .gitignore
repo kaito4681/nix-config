@@ -7,6 +7,7 @@ result-*
 
 # Ignore automatically generated direnv output
 .direnv
+/.pre-commit-config.yaml
 
 # Ignore NixOS interactive test driver history
 **/.nixos-test-history

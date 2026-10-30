@@ -61,6 +61,9 @@ source /etc/set-environment
 
 ## コマンド
 
+`nix develop` を実行すると、コミット時に nixfmt を実行する Git hook が登録されます。
+全 Nix ファイルの整形は `nix fmt`、整形チェックは `nix flake check` で実行できます。
+
 ```bash
 just                       # コマンド一覧を表示
 just update                # 依存関係を更新

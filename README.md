@@ -63,6 +63,9 @@ source /etc/set-environment
 
 ## Commands
 
+Run `nix develop` to install the Git hook that runs nixfmt on commit.
+Use `nix fmt` to format all Nix files and `nix flake check` to check formatting.
+
 ```bash
 just                       # List commands
 just update                # Update dependencies
