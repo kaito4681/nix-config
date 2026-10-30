@@ -68,7 +68,10 @@ variable `CACHIX_CACHE` to its name, and set the repository secret
 `CACHIX_AUTH_TOKEN` to a write token for that cache. Caching is skipped when the
 cache name is unset. Pull requests only read from the cache.
 
-To use the cache locally, run `nix run nixpkgs#cachix -- use kaito4681-nix-config`.
+On `lab`, applying the NixOS configuration enables the cache automatically.
+The flake also declares cache settings for commands such as `nix build --accept-flake-config`.
+If the Nix daemon disallows these settings, an administrator must configure the cache.
+Outside NixOS, run `nix run nixpkgs#cachix -- use kaito4681-nix-config` to configure it.
 
 ## Commands
 

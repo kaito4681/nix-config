@@ -1,6 +1,13 @@
 {
   description = "Home Manager configuration";
 
+  nixConfig = {
+    extra-substituters = [ "https://kaito4681-nix-config.cachix.org" ];
+    extra-trusted-public-keys = [
+      "kaito4681-nix-config.cachix.org-1:WKOffPQiuP7cI/z3JgHO+fQlXrOVbd2g1YY6ykhRYUk="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

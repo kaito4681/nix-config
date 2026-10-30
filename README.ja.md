@@ -67,7 +67,10 @@ Repository variable `CACHIX_CACHE` にキャッシュ名、Repository secret
 キャッシュ名が未設定の場合はキャッシュ処理をスキップします。
 Pull request ではキャッシュの読み取りのみ行います。
 
-手元でも利用する場合は `nix run nixpkgs#cachix -- use kaito4681-nix-config` を実行してください。
+`lab` は NixOS 設定の適用後にキャッシュを自動利用します。
+flake にもキャッシュ設定があり、`nix build --accept-flake-config` などで利用できます。
+ただし Nix daemon が設定の追加を許可しない環境では、管理者による設定が必要です。
+NixOS 以外では `nix run nixpkgs#cachix -- use kaito4681-nix-config` で設定できます。
 
 ## コマンド
 

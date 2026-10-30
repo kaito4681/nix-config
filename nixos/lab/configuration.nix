@@ -58,6 +58,11 @@
     "flakes"
   ];
 
+  nix.settings.extra-substituters = [ "https://kaito4681-nix-config.cachix.org" ];
+  nix.settings.extra-trusted-public-keys = [
+    "kaito4681-nix-config.cachix.org-1:WKOffPQiuP7cI/z3JgHO+fQlXrOVbd2g1YY6ykhRYUk="
+  ];
+
   nixpkgs.config.allowUnfree = true;
 
   # Home Manager の適用前でも管理コマンドを使えるようにする。
