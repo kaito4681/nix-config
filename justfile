@@ -1,5 +1,7 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
+mod darwin 'just/darwin.just'
+
 mod add 'just/add.just'
 mod home 'just/home.just'
 mod nixos 'just/nixos.just'

@@ -5,7 +5,6 @@
   home.sessionPath = lib.mkAfter [ "/Library/TeX/texbin" ];
 
   home.shellAliases = {
-    tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
     "draw.io" = "/Applications/draw.io.app/Contents/MacOS/draw.io";
   };
 

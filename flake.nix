@@ -12,6 +12,11 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,6 +37,7 @@
       self,
       nixpkgs,
       nixpkgs-darwin,
+      nix-darwin,
       home-manager,
       gpueue,
       git-hooks,
@@ -50,15 +56,36 @@
         inherit nixpkgs gpueue specialArgs;
       };
 
+      darwinConfigurations.darwin =
+        let
+          hostName = "darwin";
+          privateModule = ./private/darwin/${hostName}/default.nix;
+        in
+        nix-darwin.lib.darwinSystem {
+          specialArgs = specialArgs // {
+            inherit hostName;
+          };
+          modules = [
+            ./darwin
+          ]
+          ++ nixpkgs.lib.optional (builtins.pathExists privateModule) privateModule;
+        };
+
       homeConfigurations = import ./home {
         inherit nixpkgs home-manager specialArgs;
         nixpkgsDarwin = nixpkgs-darwin;
       };
 
       # 初回適用に使う Home Manager コマンド
-      packages = forEachSystem (system: {
-        home-manager = home-manager.packages.${system}.home-manager;
-      });
+      packages = forEachSystem (
+        system:
+        {
+          home-manager = home-manager.packages.${system}.home-manager;
+        }
+        // nixpkgs.lib.optionalAttrs (system == "aarch64-darwin") {
+          darwin-rebuild = nix-darwin.packages.${system}.darwin-rebuild;
+        }
+      );
 
       formatter = forEachSystem (
         system:
