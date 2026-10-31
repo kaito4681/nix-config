@@ -18,9 +18,6 @@
   home.packages =
     with pkgs;
     [
-      curl
-      wget
-
       # Nix
       nixfmt
 
@@ -28,36 +25,60 @@
       codex
       claude-code
 
-      # Python 開発
+      # JavaScript / TypeScript
+      nodejs_latest
+      pnpm
+      bun
+      deno
+
+      # Python
       python3
       uv
       ruff
       ty
 
-      # システム監視・ネットワーク調査
-      htop
-      nmap
+      # Rust
+      rustc
+      cargo
+      rustfmt
+      clippy
 
-      # ファイル・テキスト検索
-      ripgrep
-      fd
+      # Go
+      go
+      gopls
 
-      # ユーティリティ
-      tree
-      unzip
-      zip
-      fastfetch
+      # Perl
+      perl
 
-      # シェル関連ツール
-      sheldon
-
+      # Git・開発支援
+      git-xet
       lefthook
+      swiftlint
       just
 
-      hyperfine
+      # ファイル・テキスト操作
+      ripgrep
+      fd
+      tree
+      yazi
       bat
+      unzip
+      zip
+
+      # 画像処理
+      imagemagick
+
+      # ターミナル・システム監視
       tmux
-      perl
+      htop
+      fastfetch
+      hyperfine
+
+      # 通信・ネットワーク調査
+      curl
+      wget
+      nmap
+      iperf3
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux (
       with pkgs;
