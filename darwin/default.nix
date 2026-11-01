@@ -11,6 +11,7 @@
     ./input.nix
     ./desktop.nix
     ./finder.nix
+    ./mas.nix
     ./tailscale.nix
   ];
 
