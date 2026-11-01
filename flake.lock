@@ -42,11 +42,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1792255750,
-        "narHash": "sha256-GU3BKn6sn4ev4KOHDyLla0BITabdu/tqzr8dUb2xl+o=",
+        "lastModified": 1793535010,
+        "narHash": "sha256-5o9+stjsic8Cwlo6H1KlJf4JivHtrzWThqpCgLSdsxw=",
         "owner": "kaito4681",
         "repo": "gpueue",
-        "rev": "48a3206d0c6178a2f2ba6adebeba689f719bf66b",
+        "rev": "e48d75ec2614db0217feb25c10f6c98bef30696e",
         "type": "github"
       },
       "original": {
