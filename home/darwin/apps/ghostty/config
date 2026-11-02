@@ -1,0 +1,42 @@
+# Appearance
+theme = GitHub Dark High Contrast
+font-size = 18
+background-opacity = 0.75
+font-thicken = true
+font-thicken-strength = 1
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+initial-window = false
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+cursor-invert-fg-bg = true
+cursor-opacity = 0.8
+
+# Quick Terminal
+# quick-terminal-position = right
+quick-terminal-autohide = false
+# quick-terminal-size = 50%,100%
+quick-terminal-size = 100%,100%
+# quick-terminal-screen = mouse
+quick-terminal-screen = macos-menu-bar
+quick-terminal-animation-duration = 0
+
+# Keybind
+macos-option-as-alt = true
+
+keybind = ctrl+a=unbind
+keybind = ctrl+k=unbind
+keybind = ctrl+u=unbind
+keybind = ctrl+e=unbind
+keybind = ctrl+w=unbind
+
+# Command + Option + ← to go to the previous tab
+keybind = super+alt+arrow_left=previous_tab
+
+# Command + Option + → to go to the next tab
+keybind = super+alt+arrow_right=next_tab
