@@ -17,6 +17,7 @@
     enableBashIntegration = true;
     enableZshIntegration = true;
   };
+  home.sessionVariables._ZO_ECHO = "1"; # 移動先のディレクトリを表示する。
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
