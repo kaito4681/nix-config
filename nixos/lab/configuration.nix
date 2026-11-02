@@ -94,6 +94,10 @@
     # NixOS の標準ファイアウォールは送信を制限せず，その応答も許可する．
   };
 
+  # root と rootless の Docker を併用する．
+  virtualisation.docker.enable = true;
+  hardware.nvidia-container-toolkit.enable = true;
+
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;

@@ -21,6 +21,9 @@
       # Nix
       nixfmt
 
+      # C/C++ 開発
+      gcc
+
       # AI エージェント
       codex
       claude-code
@@ -57,6 +60,7 @@
       just
 
       # ファイル・テキスト操作
+      jq
       ripgrep
       fd
       tree
