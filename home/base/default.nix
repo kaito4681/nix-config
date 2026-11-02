@@ -87,6 +87,7 @@
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux (
       with pkgs;
       [
+        bubblewrap
         xdg-utils
         wl-clipboard
         xclip
