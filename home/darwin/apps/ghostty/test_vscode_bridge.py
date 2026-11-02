@@ -63,6 +63,16 @@ class BridgeTests(unittest.TestCase):
             with self.subTest(args=args):
                 self.assertEqual(bridge.destination(args), expected)
 
+    def test_bridge_socket_from_remote_forward(self):
+        cases = [(["-t", "-R", "/tmp/gv.ABCDEFGH/s:/tmp/gv-x/s", "server"], "/tmp/gv.ABCDEFGH/s"),
+                 (["-R/tmp/gv.ABCDEFGH/s:/tmp/gv-x/s", "server"], "/tmp/gv.ABCDEFGH/s"),
+                 (["-R", "8080:localhost:80", "server"], ""),
+                 (["-o", "/tmp/gv.ABCDEFGH/s:x", "server"], ""),
+                 (["server"], "")]
+        for command, expected in cases:
+            with self.subTest(command=command):
+                self.assertEqual(bridge.bridge_socket(command), expected)
+
     def test_session_uses_only_unix_sockets_and_cleans_up(self):
         bootstrap_calls = []
 

@@ -22,23 +22,34 @@ SSH = "/usr/bin/ssh"
 ARGUMENT_OPTIONS = set("BbcDEeFIiJLlmOoPpQRSWw")
 HOST = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.@:+-]*\Z")
 REMOTE_DIR = re.compile(r"/tmp/gv\.[A-Za-z0-9]+\Z")
+REMOTE_FORWARD = re.compile(r"(/tmp/gv\.[A-Za-z0-9]+/s):")
 MAX_REQUEST = 16384
 
 # Linux の /proc から、最近入力のあった pty の前面プロセスのディレクトリを推定する。
 # 最近使われた pty のうち tmux 内側のものを優先する。リモートのシェルにフックは要らない。
+# $sock があれば、その中継の環境変数を持つプロセスがいる pty に絞り、ほかの接続と
+# 取り違えないようにする。該当する pty がなければ全体から推定する。前面が tmux の
+# クライアントなら、tmux にそのクライアントが表示しているペインのパスを聞く。
 REMOTE_CWD = r"""
-{ stat -c 'S %X %U %n' /dev/pts/[0-9]*; ps -eo pid=,ppid=,sid=,tpgid=,tty=,comm=; } | awk -v me="$(id -un)" -v self="$(tty)" '
+{ [ -n "$sock" ] && grep -lzxF "GHOSTTY_VSCODE_SOCKET=$sock" /proc/[0-9]*/environ 2>/dev/null | sed -n 's|^/proc/\([0-9]*\)/environ$|P \1|p'
+  stat -c 'S %X %U %n' /dev/pts/[0-9]*; ps -eo pid=,ppid=,sid=,tpgid=,tty=,comm=; } | awk -v me="$(id -un)" -v self="$(tty)" '
+$1 == "P" { mine[$2] = 1; next }
 $1 == "S" { if ($3 == me && $4 != self) { t = $4; sub("^/dev/", "", t); atime[t] = $2 }; next }
-{ ppid[$1] = $2; comm[$1] = $6; if ($5 ~ /^pts\//) { fg[$5] = $4; if ($1 == $3) leader[$5] = $1 } }
+{ ppid[$1] = $2; comm[$1] = $6; if ($5 ~ /^pts\//) { fg[$5] = $4; if ($1 == $3) leader[$5] = $1; if ($1 in mine) { owned[$5] = 1; scoped = 1 } } }
 END {
-  for (t in atime) if (fg[t] > 0 && atime[t] > latest) latest = atime[t]
+  for (t in atime) if (fg[t] > 0 && (!scoped || t in owned) && atime[t] > latest) latest = atime[t]
   for (t in atime) {
-    if (fg[t] <= 0 || atime[t] <= latest - 8) continue
+    if (fg[t] <= 0 || (scoped && !(t in owned)) || atime[t] <= latest - 8) continue
     outer = comm[ppid[leader[t]]] ~ /^sshd/
     if (best == "" || (bestOuter && !outer) || (bestOuter == outer && atime[t] > atime[best])) { best = t; bestOuter = outer }
   }
-  if (best != "") print fg[best]
-}' | { read -r pid && readlink "/proc/$pid/cwd"; }
+  if (best != "") print fg[best], best, (comm[fg[best]] ~ /^tmux/ ? "tmux" : "-")
+}' | { read -r pid tty kind || exit
+  if [ "$kind" = tmux ] && path=$(tmux display-message -p -c "/dev/$tty" '#{pane_current_path}' 2>/dev/null) && [ -n "$path" ]; then
+    printf '%s\n' "$path"
+  else
+    readlink "/proc/$pid/cwd"
+  fi; }
 """
 
 
@@ -283,6 +294,16 @@ def find_ssh(pid, processes):
     return visit(pid)
 
 
+def bridge_socket(command):
+    """中継を通した接続なら、SSH 先に転送しているソケットのパスを返す。"""
+    for previous, arg in zip([""] + command, command):
+        value = arg if previous == "-R" else arg[2:] if arg.startswith("-R") else ""
+        match = REMOTE_FORWARD.match(value)
+        if match:
+            return match.group(1)
+    return ""
+
+
 def multiplexer_pid(pid, tty, processes):
     if Path(processes.get(pid, (0, ""))[1]).name != "tmux":
         return pid
@@ -315,8 +336,9 @@ end tell'''
         host = command[-1]
         # この問い合わせではフォワードの待ち受けを開かない。パスワードを尋ねたり、
         # SSH 切断後に古い OSC 7 のディレクトリを使ったりもしない。
+        script = "sock=" + shlex.quote(bridge_socket(command)) + REMOTE_CWD
         path = capture([SSH, "-o", "BatchMode=yes", "-o", "ClearAllForwardings=yes"]
-                       + command[:-1] + ["-T", host, REMOTE_CWD])
+                       + command[:-1] + ["-T", host, script])
         open_code(host, path)
     else:
         cwd = capture(["/usr/sbin/lsof", "-a", "-p", str(pid), "-d", "cwd", "-Fn"])
