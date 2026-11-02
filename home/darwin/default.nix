@@ -3,6 +3,8 @@
 {
   imports = [
     ../base
+    ./apps
+    ./docker.nix
     ./shell
   ];
 
