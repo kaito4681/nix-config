@@ -42,7 +42,6 @@ in
         ${defer.native "fzf"}
         ${defer.native "plugins"}
         ${defer.native "autosuggestion"}
-        ${defer.command "-c '[[ -n $HERDR_ENV ]] && unset ZSH_AUTOSUGGEST_USE_ASYNC; return 0'"}
 
         # 開発ツールのシェル連携
         ${defer.native "mise"}
