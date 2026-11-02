@@ -3,6 +3,7 @@
 {
   imports = [
     ../base
+    ./apps
     ./shell
   ];
 
