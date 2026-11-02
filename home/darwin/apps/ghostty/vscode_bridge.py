@@ -24,8 +24,8 @@ HOST = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.@:+-]*\Z")
 REMOTE_DIR = re.compile(r"/tmp/gv\.[A-Za-z0-9]+\Z")
 MAX_REQUEST = 16384
 
-# wezterm/ssh/directory.lua と同じ Linux の /proc を使う推定。最近使われた pty のうち
-# tmux 内側のものを優先する。リモートのシェルにフックは要らない。
+# Linux の /proc から、最近入力のあった pty の前面プロセスのディレクトリを推定する。
+# 最近使われた pty のうち tmux 内側のものを優先する。リモートのシェルにフックは要らない。
 REMOTE_CWD = r"""
 { stat -c 'S %X %U %n' /dev/pts/[0-9]*; ps -eo pid=,ppid=,sid=,tpgid=,tty=,comm=; } | awk -v me="$(id -un)" -v self="$(tty)" '
 $1 == "S" { if ($3 == me && $4 != self) { t = $4; sub("^/dev/", "", t); atime[t] = $2 }; next }
