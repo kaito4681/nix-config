@@ -20,9 +20,13 @@
     [
       curl
       wget
+      jq
 
       # Nix
       nixfmt
+
+      # C/C++ 開発
+      gcc
 
       # AI エージェント
       codex
