@@ -1,4 +1,4 @@
-"""実行方法: python3 -m unittest discover -s ~/.config/ghostty -p 'test_*.py'"""
+"""実行方法: python3 -m unittest discover -s home/darwin/apps/ghostty -p 'test_*.py'"""
 
 import json
 import os
@@ -95,7 +95,7 @@ class BridgeTests(unittest.TestCase):
                 execute.assert_called_once_with(bridge.SSH, [bridge.SSH] + args)
 
     def test_real_zsh_code_function_and_rate_limit(self):
-        plugin = Path(__file__).resolve().parents[1] / "sheldon/plugins/local/sync/ssh-terminal.plugin.zsh"
+        plugin = Path(__file__).resolve().parents[3] / "base/shell/zsh/integrations/ssh-terminal.zsh"
         if not plugin.exists():
             self.skipTest("remote shell plugin is not available")
         with tempfile.TemporaryDirectory(prefix="gv-test-", dir="/tmp") as directory:
