@@ -1,4 +1,14 @@
 if [[ "$OSTYPE" == darwin* ]]; then
+  # Ghostty での対話的な SSH だけ、SSH 先から手元の VS Code を開ける中継を通す。
+  # リモートコマンドやトンネルなどは vscode_bridge.py がそのまま ssh に渡す。
+  ssh() {
+    if [[ -o interactive && -t 0 && "$TERM_PROGRAM" == ghostty && -z "$GHOSTTY_VSCODE_SOCKET" ]]; then
+      command python3 "$HOME/.config/ghostty/vscode_bridge.py" ssh "$@"
+    else
+      command ssh "$@"
+    fi
+  }
+
   gst() {
     local mode="tab"
     local dir="."
