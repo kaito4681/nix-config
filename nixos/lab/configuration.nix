@@ -12,6 +12,7 @@
     ./gpueue.nix
     ./hdd.nix
     ./printing.nix
+    ./t3code.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

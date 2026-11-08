@@ -81,6 +81,11 @@
         system:
         {
           home-manager = home-manager.packages.${system}.home-manager;
+          t3code =
+            (if system == "aarch64-darwin" then nixpkgs-darwin else nixpkgs)
+            .legacyPackages.${system}.callPackage
+              ./pkgs/t3code
+              { };
         }
         // nixpkgs.lib.optionalAttrs (system == "aarch64-darwin") {
           darwin-rebuild = nix-darwin.packages.${system}.darwin-rebuild;

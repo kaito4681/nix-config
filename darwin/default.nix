@@ -12,6 +12,7 @@
     ./desktop.nix
     ./finder.nix
     ./mas.nix
+    ./t3code.nix
     ./tailscale.nix
   ];
 
