@@ -10,7 +10,8 @@
   zlib,
 }:
 let
-  version = "0.1.7";
+  release = builtins.fromJSON (builtins.readFile ./release.json);
+  inherit (release) version;
   darwin = stdenvNoCC.hostPlatform.isDarwin;
   app = "T3 Code (Beta)";
   privacy = "--set T3CODE_TELEMETRY_ENABLED false --set T3CODE_OTEL_SDK_DISABLED true --set T3CODE_DISABLE_AUTO_UPDATE 1";
@@ -22,12 +23,12 @@ stdenvNoCC.mkDerivation {
     if darwin then
       {
         url = "https://github.com/pingdotgg/t3code/releases/download/v${version}/T3-Code-${version}-arm64.zip";
-        hash = "sha256-N6TwR0kLg+jX4OTtD47ZAzji0gNlXgopNiHyTBOSF6E=";
+        hash = release.hashes.aarch64-darwin;
       }
     else
       {
         url = "https://github.com/pingdotgg/t3code/releases/download/v${version}/t3-${version}-linux-x64.tar.gz";
-        hash = "sha256-wImJK/eSLi5zxvRKXR6hJcmfcON4wYNhy77S+6GSDmw=";
+        hash = release.hashes.x86_64-linux;
       }
   );
   nativeBuildInputs = [

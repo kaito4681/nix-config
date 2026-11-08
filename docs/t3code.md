@@ -1,9 +1,18 @@
 # T3 Code: Nix-managed desktop and tailnet server
 
-Both packages use the official 0.1.7 release with fixed SHA-256 hashes. macOS keeps
+Both packages use the official release pinned in `pkgs/t3code/release.json` with fixed SHA-256 hashes. macOS keeps
 its upstream signed app bundle intact; Linux keeps the Node SEA payload intact
-and patches native dependencies for NixOS. Update the version and both hashes in
-`pkgs/t3code/default.nix` together. Updates are performed through Nix.
+and patches native dependencies for NixOS. GitHub Actions checks stable upstream releases every six hours (also manually via
+Update T3 Code). It downloads both assets and verifies their SHA-256 digests and
+sizes against GitHub release metadata, then opens/refreshes one update PR. Draft,
+nightly, downgrade, incomplete, or mismatched releases are rejected. After all
+configuration builds and both platform CLI/policy checks plus macOS signature
+verification pass, Actions squash-merges only the verified PR head commit. The
+workflow uses GITHUB_TOKEN and explicitly calls CI; no personal token or repository
+Auto-merge toggle is needed. GitHub Actions must be allowed to create PRs in the
+repository settings. A failed check keeps the PR open. Package-format or policy
+incompatibilities require manual changes. Merging updates the repository pin;
+installed machines update when their Nix configuration is next applied.
 
 ## Privacy
 
