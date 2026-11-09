@@ -1,0 +1,14 @@
+{
+  "t3code": {
+    "repository": "pingdotgg/t3code",
+    "pin": "pkgs/t3code/release.json",
+    "assets": {
+      "aarch64-darwin": "T3-Code-{version}-arm64.zip",
+      "x86_64-linux": "t3-{version}-linux-x64.tar.gz"
+    },
+    "checks": [
+      { "runner": "ubuntu-24.04", "verify": "ci/pkgs/verify/t3code.sh" },
+      { "runner": "macos-15", "verify": "ci/pkgs/verify/t3code.sh" }
+    ]
+  }
+}

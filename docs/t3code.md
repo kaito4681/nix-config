@@ -3,7 +3,7 @@
 Both packages use the official release pinned in `pkgs/t3code/release.json` with fixed SHA-256 hashes. macOS keeps
 its upstream signed app bundle intact; Linux keeps the Node SEA payload intact
 and patches native dependencies for NixOS. GitHub Actions checks stable upstream releases every six hours (also manually via
-Update T3 Code). It downloads both assets and verifies their SHA-256 digests and
+Update packages). It downloads both assets and verifies their SHA-256 digests and
 sizes against GitHub release metadata, then opens/refreshes one update PR. Draft,
 nightly, downgrade, incomplete, or mismatched releases are rejected. After all
 configuration builds and both platform CLI/policy checks plus macOS signature
@@ -90,3 +90,20 @@ expiry. Do not run `t3 service install`: NixOS owns the service.
 
 Back up `~/.t3` before version changes. A Nix rollback restores the binary, but
 may also require restoring matching application data if the database was migrated.
+
+## Adding packages to automated updates
+
+The shared workflow is `.github/workflows/update-pkgs.yaml`. Add an entry in
+`ci/pkgs/packages.json` with the GitHub repository, release pin JSON path, asset
+filename templates (`{version}`), and checks (runner plus verification script).
+The pin format is `{ "version": "…", "hashes": { "system": "sha256-…" } }`.
+Expose the package under `packages.<system>.<entry-name>` in the flake and consume
+its pin in the Nix derivation. Add a verification script under `ci/pkgs/verify/`;
+it runs after that package is built to `result`. `RUNNER_TEMP` and `RUNNER_OS`
+are available. The common updater currently supports stable `vMAJOR.MINOR.PATCH`
+GitHub releases with published asset SHA-256 digests.
+
+Updates are grouped into one `automation/update-pkgs` PR. All assets are verified
+before any pin is written; the check matrix is generated from the changed package
+entries. Every registered check and complete configuration CI must succeed before
+the exact PR head is merged. Adding packages does not require changing the workflow.
