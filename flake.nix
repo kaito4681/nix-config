@@ -17,6 +17,8 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,6 +40,7 @@
       nixpkgs,
       nixpkgs-darwin,
       nix-darwin,
+      nix-homebrew,
       home-manager,
       gpueue,
       git-hooks,
@@ -66,6 +69,7 @@
             inherit hostName;
           };
           modules = [
+            nix-homebrew.darwinModules.nix-homebrew
             ./darwin
           ]
           ++ nixpkgs.lib.optional (builtins.pathExists privateModule) privateModule;
