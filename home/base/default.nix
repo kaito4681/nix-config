@@ -23,6 +23,8 @@
 
       # C/C++ 開発
       gcc
+      gnumake
+      pkg-config
 
       # AI エージェント
       codex
