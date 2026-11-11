@@ -18,6 +18,7 @@ let
     highlighting = config.programs.zsh.syntaxHighlighting.enable;
     fzf = config.programs.fzf.enable && config.programs.fzf.enableZshIntegration;
     starship = config.programs.starship.enable && config.programs.starship.enableZshIntegration;
+    worktrunk = config.programs.worktrunk.enable && config.programs.worktrunk.enableZshIntegration;
     mise = config.programs.mise.enable && config.programs.mise.enableZshIntegration;
     direnv = config.programs.direnv.enable && config.programs.direnv.enableZshIntegration;
     zoxide = config.programs.zoxide.enable && config.programs.zoxide.enableZshIntegration;
@@ -32,6 +33,7 @@ let
       d: core d && lib.hasPrefix "source ${config.programs.zsh.syntaxHighlighting.package}/" d.value;
     fzf = from "/modules/programs/fzf.nix";
     starship = from "/modules/programs/starship.nix";
+    worktrunk = from "/modules/programs/worktrunk.nix";
     mise = from "/modules/programs/mise.nix";
     direnv = from "/modules/programs/direnv.nix";
     zoxide = from "/modules/programs/zoxide.nix";

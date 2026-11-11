@@ -8,6 +8,12 @@
 {
   home.packages = [ pkgs.ghq ];
 
+  programs.worktrunk = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+  };
+
   programs.git = {
     enable = true;
 

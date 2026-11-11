@@ -44,6 +44,7 @@ in
         ${defer.native "autosuggestion"}
 
         # 開発ツールのシェル連携
+        ${defer.native "worktrunk"}
         ${defer.native "mise"}
         ${defer.native "direnv"}
         ${defer.native "zoxide"}
