@@ -69,6 +69,9 @@
   # Home Manager の適用前でも管理コマンドを使えるようにする。
   environment.systemPackages = [ pkgs.just ];
 
+  #システムの CA 証明書
+  environment.variables.SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+
   services.openssh = {
     enable = true;
     # 公開鍵は各ユーザーの Home Manager が ~/.ssh/authorized_keys に置く．
