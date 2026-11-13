@@ -55,6 +55,9 @@
       # Perl
       perl
 
+      # LaTeX
+      texliveFull
+
       # Git・開発支援
       git-xet
       lefthook
